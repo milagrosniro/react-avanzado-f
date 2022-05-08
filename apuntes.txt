@@ -1,0 +1,6 @@
+Para crear App con React y Ts: npx create-react-app nombre  --template typescript 
+
+Si quiero cambiar el nombre a una variable que estoy desesctructurando: 
+const {initialValue: number} = props
+
+Ahora initialValue se llama number
