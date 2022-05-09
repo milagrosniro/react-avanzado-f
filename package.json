@@ -1,6 +1,9 @@
 {
   "dependencies": {
     "gsap": "^3.10.4",
-    "react-router-dom": "6"
+    "react-router-dom": "v5"
+  },
+  "devDependencies": {
+    "@types/react-router-dom": "^5.3.3"
   }
 }
