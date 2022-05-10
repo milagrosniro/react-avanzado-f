@@ -1,32 +1,45 @@
-import { BrowserRouter, Navigate, NavLink, Route, Routes } from "react-router-dom"
-import logo from '../logo.svg'
-import '../index'
-const Navigation = () => {
-  return (
-    <BrowserRouter>
-    <div className="main-layout">
-        <nav>
-            <img src={logo} alt=""/>
-        <ul>
-            <li>
-                <NavLink to="/" className={({isActive}: any)=> isActive ? 'nav-active':''}>Home</NavLink>
-                <NavLink to="/about" className={({isActive}: any)=> isActive ? 'nav-active':''}>About</NavLink>
-                <NavLink to="/users" className={({isActive}: any)=> isActive ? 'nav-active':''}>Users</NavLink>
+import { BrowserRouter } from 'react-router-dom';
+import { Routes, Route, NavLink, Navigate } from 'react-router-dom';
+import {routes} from './routes';
 
-            </li>
-        </ul>
-        </nav>
+import logo from '../logo.svg';
+import { Suspense } from 'react';
 
-        <Routes>
-            <Route path="about" element={<h1>About</h1>} />
-            <Route path="users" element={<h1>Users</h1>} />
-            <Route path="/" element={<h1>Home</h1>}/>
-            <Route path="/*" element={<Navigate to="/" replace/>}/>
-        </Routes>
-    </div>
 
-    </BrowserRouter>
-  )
+export const Navigation = () => {
+    return (
+        //Cuando se trabaja con lazyComponents es necesario envolver el BrowserRouter con un Suspense.
+        //Suspense: permite mostrar un msje mientras se carga el modulo.
+        <Suspense fallback={<span>Loading...</span>}>
+
+        <BrowserRouter>
+            <div className="main-layout">
+                <nav>
+                    <img src={ logo } alt="React Logo" />
+                    <ul>
+                        {routes.map(({to, name}) =>{
+                           return <li key={to}>
+                            <NavLink to={to} className={ ({ isActive }:any) => isActive ? 'nav-active' : '' }>{name}</NavLink>
+                        </li>
+                        })}
+                        
+                    </ul>
+                </nav>
+
+
+                <Routes>
+                    {routes.map(({path,Component}) =>{
+                        return <Route
+                        key={path}
+                         path={path} element={ <Component/> } />
+                    })}
+                    <Route path="/*" element={ <Navigate to={routes[0].to} replace /> } />
+                </Routes>
+
+            </div>
+        </BrowserRouter>
+        </Suspense>
+    )
 }
 
 export default Navigation
